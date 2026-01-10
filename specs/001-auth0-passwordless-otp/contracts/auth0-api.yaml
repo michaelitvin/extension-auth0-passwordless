@@ -1,0 +1,293 @@
+openapi: 3.1.0
+info:
+  title: Auth0 Passwordless OTP API
+  description: Auth0 endpoints used by the passwordless extension
+  version: 1.0.0
+
+servers:
+  - url: https://{tenant}.auth0.com
+    variables:
+      tenant:
+        default: your-tenant
+        description: Auth0 tenant domain
+
+paths:
+  /passwordless/start:
+    post:
+      operationId: initiatePasswordlessOTP
+      summary: Send OTP code to user's email
+      description: Initiates the passwordless email OTP flow by sending a 6-digit code
+      tags:
+        - Passwordless
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordlessStartRequest'
+      responses:
+        '200':
+          description: OTP sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordlessStartResponse'
+        '400':
+          description: Invalid request (bad email format, etc.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth0Error'
+        '429':
+          description: Rate limited - too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth0Error'
+
+  /oauth/token:
+    post:
+      operationId: exchangeOTPForTokens
+      summary: Exchange OTP code for tokens
+      description: Verifies the OTP and returns access, refresh, and ID tokens
+      tags:
+        - Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/PasswordlessOTPTokenRequest'
+                - $ref: '#/components/schemas/RefreshTokenRequest'
+              discriminator:
+                propertyName: grant_type
+      responses:
+        '200':
+          description: Tokens returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth0Error'
+        '401':
+          description: Invalid or expired OTP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth0Error'
+        '403':
+          description: OTP verification failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth0Error'
+
+  /userinfo:
+    get:
+      operationId: getUserInfo
+      summary: Get user profile information
+      description: Returns user profile data using the access token
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User profile returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '401':
+          description: Invalid or expired access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth0Error'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    PasswordlessStartRequest:
+      type: object
+      required:
+        - client_id
+        - connection
+        - email
+        - send
+      properties:
+        client_id:
+          type: string
+          description: Auth0 application client ID
+          example: "abc123def456"
+        connection:
+          type: string
+          enum: [email]
+          description: Passwordless connection type
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "user@example.com"
+        send:
+          type: string
+          enum: [code]
+          description: Delivery method (code for OTP)
+        authParams:
+          type: object
+          properties:
+            scope:
+              type: string
+              description: OAuth scopes
+              default: "openid profile email offline_access"
+            audience:
+              type: string
+              description: API audience (optional)
+
+    PasswordlessStartResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Request identifier
+        email:
+          type: string
+          format: email
+          description: Email OTP was sent to
+        email_verified:
+          type: boolean
+          description: Whether email is verified
+
+    PasswordlessOTPTokenRequest:
+      type: object
+      required:
+        - grant_type
+        - client_id
+        - username
+        - otp
+        - realm
+      properties:
+        grant_type:
+          type: string
+          enum: ["http://auth0.com/oauth/grant-type/passwordless/otp"]
+        client_id:
+          type: string
+          description: Auth0 application client ID
+        username:
+          type: string
+          format: email
+          description: User's email address
+        otp:
+          type: string
+          pattern: "^[0-9]{6}$"
+          description: 6-digit OTP code
+          example: "123456"
+        realm:
+          type: string
+          enum: [email]
+          description: Passwordless connection realm
+        scope:
+          type: string
+          description: OAuth scopes
+          default: "openid profile email offline_access"
+
+    RefreshTokenRequest:
+      type: object
+      required:
+        - grant_type
+        - client_id
+        - refresh_token
+      properties:
+        grant_type:
+          type: string
+          enum: [refresh_token]
+        client_id:
+          type: string
+          description: Auth0 application client ID
+        refresh_token:
+          type: string
+          description: Refresh token from previous authentication
+
+    TokenResponse:
+      type: object
+      required:
+        - access_token
+        - token_type
+        - expires_in
+      properties:
+        access_token:
+          type: string
+          description: JWT access token
+        refresh_token:
+          type: string
+          description: Refresh token for renewal
+        id_token:
+          type: string
+          description: JWT ID token with user claims
+        token_type:
+          type: string
+          enum: [Bearer]
+        expires_in:
+          type: integer
+          description: Seconds until access token expires
+          example: 86400
+
+    UserInfo:
+      type: object
+      required:
+        - sub
+      properties:
+        sub:
+          type: string
+          description: Auth0 user identifier
+          example: "auth0|507f1f77bcf86cd799439011"
+        email:
+          type: string
+          format: email
+          description: User's email address
+        email_verified:
+          type: boolean
+          description: Whether email is verified
+        name:
+          type: string
+          description: User's display name
+        picture:
+          type: string
+          format: uri
+          description: Profile picture URL
+        updated_at:
+          type: string
+          format: date-time
+          description: Last profile update time
+
+    Auth0Error:
+      type: object
+      required:
+        - error
+        - error_description
+      properties:
+        error:
+          type: string
+          description: Error code
+          enum:
+            - invalid_request
+            - invalid_grant
+            - unauthorized_client
+            - access_denied
+            - too_many_requests
+            - server_error
+        error_description:
+          type: string
+          description: Human-readable error message
+          example: "Wrong email or verification code."

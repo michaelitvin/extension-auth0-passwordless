@@ -110,7 +110,7 @@ or vanilla JS. Framework lock-in limits utility.
 
 **Required**:
 - TypeScript 5.x with strict mode
-- Vite + CRXJS or vite-plugin-web-extension for build tooling (HMR, native ESM)
+- WXT (Vite-based extension framework) for build tooling (HMR, native ESM, cross-browser support)
 - chrome.identity API with custom PKCE implementation for Auth0 (auth0-chrome is deprecated)
 - Chrome Types (`@types/chrome` from DefinitelyTyped or `chrome-types` from Google)
 - ESLint + Prettier for code quality
@@ -122,7 +122,8 @@ or vanilla JS. Framework lock-in limits utility.
 - auth0.js for token validation helpers (optional, not required for core flow)
 
 **Prohibited**:
-- Webpack (use Vite instead - faster builds, simpler config)
+- Webpack (use WXT/Vite instead - faster builds, simpler config)
+- CRXJS (use WXT instead - better maintained, more features)
 - CommonJS modules in source (ESM only)
 - jQuery or legacy DOM libraries
 - @auth0/auth0-spa-js (designed for SPAs, not extensions)
