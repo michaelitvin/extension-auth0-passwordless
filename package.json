@@ -1,0 +1,32 @@
+{
+  "name": "extension-auth0-passwordless",
+  "version": "1.0.0",
+  "description": "Reference implementation of Auth0 passwordless OTP login in a Chromium extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "postinstall": "wxt prepare",
+    "test": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "generate-key": "bash scripts/generate-extension-key.sh"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/chrome": "^0.1.33",
+    "dotenv": "^17.2.3",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.7.4",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.52.0",
+    "vitest": "^4.0.16",
+    "wxt": "^0.20.13"
+  }
+}

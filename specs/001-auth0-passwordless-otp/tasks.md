@@ -19,12 +19,12 @@
 
 **Purpose**: Initialize WXT project with TypeScript and configure Auth0 environment
 
-- [ ] T001 Initialize WXT project with TypeScript template using `pnpm create wxt@latest`
-- [ ] T002 Configure wxt.config.ts with manifest permissions (storage, alarms, identity) and host_permissions
-- [ ] T003 [P] Configure tsconfig.json with strict mode per constitution in tsconfig.json
-- [ ] T004 [P] Add @types/chrome dependency and configure ESLint + Prettier
-- [ ] T005 [P] Create .env.example with AUTH0_DOMAIN and AUTH0_CLIENT_ID placeholders in .env.example
-- [ ] T006 [P] Create extension icons (16x16, 48x48, 128x128) in public/icons/
+- [x] T001 Initialize WXT project with TypeScript template using `pnpm create wxt@latest`
+- [x] T002 Configure wxt.config.ts with manifest permissions (storage, alarms, identity) and host_permissions
+- [x] T003 [P] Configure tsconfig.json with strict mode per constitution in tsconfig.json
+- [x] T004 [P] Add @types/chrome dependency and configure ESLint + Prettier
+- [x] T005 [P] Create .env.example with AUTH0_DOMAIN and AUTH0_CLIENT_ID placeholders in .env.example
+- [x] T006 [P] Create extension icons (16x16, 48x48, 128x128) in public/icons/
 
 ---
 
@@ -36,36 +36,36 @@
 
 ### Type Definitions
 
-- [ ] T007 [P] Create TypeScript interfaces (AuthState, OTPRequest, TokenResponse, AuthError) in src/auth/types.ts
-- [ ] T008 [P] Create message contracts (AuthRequest, AuthResponse types) in src/messages/types.ts
+- [x] T007 [P] Create TypeScript interfaces (AuthState, OTPRequest, TokenResponse, AuthError) in src/auth/types.ts
+- [x] T008 [P] Create message contracts (AuthRequest, AuthResponse types) in src/messages/types.ts
 
 ### Storage Layer
 
-- [ ] T009 [P] Implement chrome.storage.session wrapper for access tokens in src/storage/session-storage.ts
-- [ ] T010 [P] Implement chrome.storage.local wrapper with encryption for refresh tokens in src/storage/local-storage.ts
-- [ ] T011 Implement unified SecureStorage facade combining session and local in src/storage/index.ts
+- [x] T009 [P] Implement chrome.storage.session wrapper for access tokens in src/storage/session-storage.ts
+- [x] T010 [P] Implement chrome.storage.local wrapper with encryption for refresh tokens in src/storage/local-storage.ts
+- [x] T011 Implement unified SecureStorage facade combining session and local in src/storage/index.ts
 
 ### Auth0 API Client
 
-- [ ] T012 [P] Implement PKCE helper (generateCodeVerifier, generateCodeChallenge) in src/auth/pkce.ts
-- [ ] T013 Implement Auth0 config loader (domain, clientId from env) in src/auth/config.ts
-- [ ] T014 Implement base Auth0 API client with error handling and retry logic for service worker cold starts in src/auth/api-client.ts
+- [x] T012 [P] Implement PKCE helper (generateCodeVerifier, generateCodeChallenge) in src/auth/pkce.ts
+- [x] T013 Implement Auth0 config loader (domain, clientId from env) in src/auth/config.ts
+- [x] T014 Implement base Auth0 API client with error handling and retry logic for service worker cold starts in src/auth/api-client.ts
 
 ### Token Validation
 
-- [ ] T015 Implement ID token validation (signature, audience, issuer, expiration) in src/auth/token-validation.ts
+- [x] T015 Implement ID token validation (signature, audience, issuer, expiration) in src/auth/token-validation.ts
 
 ### Error Handling
 
-- [ ] T016 Implement AuthError class with error codes and user-friendly messages in src/utils/errors.ts
+- [x] T016 Implement AuthError class with error codes and user-friendly messages in src/utils/errors.ts
 
 ### Service Worker Shell
 
-- [ ] T017 Create service worker entry point with message listener scaffold in src/entrypoints/background.ts
+- [x] T017 Create service worker entry point with message listener scaffold in src/entrypoints/background.ts
 
 ### Auth State Machine (State Persistence Guard)
 
-- [ ] T018 Implement Auth State Machine in service worker - all auth state (code_verifier, email, OTP flow state) persists in chrome.storage.session, survives popup closure. Popup acts as dumb view sending messages only in src/auth/state-machine.ts
+- [x] T018 Implement Auth State Machine in service worker - all auth state (code_verifier, email, OTP flow state) persists in chrome.storage.session, survives popup closure. Popup acts as dumb view sending messages only in src/auth/state-machine.ts
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -79,17 +79,17 @@
 
 ### Implementation for User Story 1
 
-- [ ] T019 [US1] Implement initiateOTP function calling /passwordless/start in src/auth/passwordless.ts
-- [ ] T020 [US1] Implement verifyOTP function calling /oauth/token with OTP grant in src/auth/passwordless.ts
-- [ ] T021 [US1] Implement OTPRequest state management (tracking attempts, expiry, code_verifier keyed by email for multi-window support) in src/auth/otp-state.ts
-- [ ] T022 [US1] Add INITIATE_OTP message handler in service worker in src/entrypoints/background.ts
-- [ ] T023 [US1] Add VERIFY_OTP message handler in service worker in src/entrypoints/background.ts
-- [ ] T024 [P] [US1] Create popup HTML structure with email form and OTP input in src/entrypoints/popup/index.html
-- [ ] T025 [P] [US1] Create popup styles (login form, OTP input, status display) in src/entrypoints/popup/styles.css
-- [ ] T026 [US1] Implement popup main.ts with email submission logic in src/entrypoints/popup/main.ts
-- [ ] T027 [US1] Implement OTP code input UI with validation (6 digits) in src/entrypoints/popup/main.ts
-- [ ] T028 [US1] Add loading states and error message display in popup in src/entrypoints/popup/main.ts
-- [ ] T029 [US1] Add email format validation before OTP request in src/auth/validation.ts
+- [x] T019 [US1] Implement initiateOTP function calling /passwordless/start in src/auth/api-client.ts
+- [x] T020 [US1] Implement verifyOTP function calling /oauth/token with OTP grant in src/auth/api-client.ts
+- [x] T021 [US1] Implement OTPRequest state management (tracking attempts, expiry, code_verifier keyed by email for multi-window support) in src/auth/state-machine.ts
+- [x] T022 [US1] Add INITIATE_OTP message handler in service worker in src/entrypoints/background.ts
+- [x] T023 [US1] Add VERIFY_OTP message handler in service worker in src/entrypoints/background.ts
+- [x] T024 [P] [US1] Create popup HTML structure with email form and OTP input in src/entrypoints/popup/index.html
+- [x] T025 [P] [US1] Create popup styles (login form, OTP input, status display) in src/entrypoints/popup/styles.css
+- [x] T026 [US1] Implement popup main.ts with email submission logic in src/entrypoints/popup/main.ts
+- [x] T027 [US1] Implement OTP code input UI with validation (6 digits) in src/entrypoints/popup/main.ts
+- [x] T028 [US1] Add loading states and error message display in popup in src/entrypoints/popup/main.ts
+- [x] T029 [US1] Add email format validation before OTP request in src/auth/validation.ts
 
 **Checkpoint**: User can complete full OTP login flow - MVP functional
 
@@ -103,15 +103,15 @@
 
 ### Implementation for User Story 2
 
-- [ ] T030 [US2] Implement token storage on successful auth (session + local) in src/auth/tokens.ts
-- [ ] T031 [US2] Implement session restoration on service worker startup in src/entrypoints/background.ts
-- [ ] T032 [US2] Implement 7-day session expiry check in src/auth/session.ts
-- [ ] T033 [US2] Implement silent token refresh using chrome.alarms in src/auth/tokens.ts
-- [ ] T034 [US2] Add alarm listener for token-refresh in service worker in src/entrypoints/background.ts
-- [ ] T035 [US2] Implement logout function clearing all storage in src/auth/session.ts
-- [ ] T036 [US2] Add LOGOUT message handler in service worker in src/entrypoints/background.ts
-- [ ] T037 [US2] Add logout button and handler in popup UI in src/entrypoints/popup/main.ts
-- [ ] T038 [US2] Add GET_AUTH_STATE message handler for popup initialization in src/entrypoints/background.ts
+- [x] T030 [US2] Implement token storage on successful auth (session + local) in src/storage/index.ts
+- [x] T031 [US2] Implement session restoration on service worker startup in src/entrypoints/background.ts
+- [x] T032 [US2] Implement 7-day session expiry check in src/storage/index.ts
+- [x] T033 [US2] Implement silent token refresh using chrome.alarms in src/entrypoints/background.ts
+- [x] T034 [US2] Add alarm listener for token-refresh in service worker in src/entrypoints/background.ts
+- [x] T035 [US2] Implement logout function clearing all storage in src/auth/state-machine.ts
+- [x] T036 [US2] Add LOGOUT message handler in service worker in src/entrypoints/background.ts
+- [x] T037 [US2] Add logout button and handler in popup UI in src/entrypoints/popup/main.ts
+- [x] T038 [US2] Add GET_AUTH_STATE message handler for popup initialization in src/entrypoints/background.ts
 
 **Checkpoint**: Sessions persist across browser restarts, logout works
 
@@ -125,12 +125,12 @@
 
 ### Implementation for User Story 3
 
-- [ ] T039 [US3] Implement rate limiting logic (5 requests per 15-minute window) in src/auth/otp-state.ts
-- [ ] T040 [US3] Implement resendOTP function with rate limit check in src/auth/passwordless.ts
-- [ ] T041 [US3] Add RESEND_OTP message handler in service worker in src/entrypoints/background.ts
-- [ ] T042 [US3] Add "Resend Code" button in OTP entry UI in src/entrypoints/popup/main.ts
-- [ ] T043 [US3] Display rate limit countdown when limit reached in src/entrypoints/popup/main.ts
-- [ ] T044 [US3] Show confirmation message after successful resend in src/entrypoints/popup/main.ts
+- [x] T039 [US3] Implement rate limiting logic (5 requests per 15-minute window) in src/auth/state-machine.ts
+- [x] T040 [US3] Implement resendOTP function with rate limit check in src/auth/message-handlers.ts
+- [x] T041 [US3] Add RESEND_OTP message handler in service worker in src/entrypoints/background.ts
+- [x] T042 [US3] Add "Resend Code" button in OTP entry UI in src/entrypoints/popup/main.ts
+- [x] T043 [US3] Display rate limit countdown when limit reached in src/entrypoints/popup/main.ts
+- [x] T044 [US3] Show confirmation message after successful resend in src/entrypoints/popup/main.ts
 
 **Checkpoint**: Users can resend OTP codes with rate limiting protection
 
@@ -144,10 +144,10 @@
 
 ### Implementation for User Story 4
 
-- [ ] T045 [US4] Create authenticated state view showing user email in src/entrypoints/popup/main.ts
-- [ ] T046 [US4] Implement auth state detection on popup open in src/entrypoints/popup/main.ts
-- [ ] T047 [US4] Add session age indicator (days remaining) in src/entrypoints/popup/main.ts
-- [ ] T048 [US4] Implement state sync across multiple popup instances via storage events in src/entrypoints/popup/main.ts
+- [x] T045 [US4] Create authenticated state view showing user email in src/entrypoints/popup/main.ts
+- [x] T046 [US4] Implement auth state detection on popup open in src/entrypoints/popup/main.ts
+- [x] T047 [US4] Add session age indicator (days remaining) in src/entrypoints/popup/main.ts
+- [x] T048 [US4] Implement state sync across multiple popup instances via storage events in src/entrypoints/popup/main.ts
 
 **Checkpoint**: Users see their authentication status clearly
 
@@ -161,12 +161,12 @@
 
 ### Implementation for User Story 5
 
-- [ ] T049 [US5] Implement fetchUserInfo function calling /userinfo with access token in src/auth/userinfo.ts
-- [ ] T050 [US5] Add FETCH_USER_INFO message handler in service worker in src/entrypoints/background.ts
-- [ ] T051 [US5] Handle token refresh before API call if expired in src/auth/userinfo.ts
-- [ ] T052 [US5] Add "Test API" button in authenticated popup view in src/entrypoints/popup/main.ts
-- [ ] T053 [US5] Display UserProfile response (sub, email, name, picture) in popup in src/entrypoints/popup/main.ts
-- [ ] T054 [US5] Add loading and error states for API demo in src/entrypoints/popup/main.ts
+- [x] T049 [US5] Implement fetchUserInfo function calling /userinfo with access token in src/auth/api-client.ts
+- [x] T050 [US5] Add FETCH_USER_INFO message handler in service worker in src/entrypoints/background.ts
+- [x] T051 [US5] Handle token refresh before API call if expired in src/auth/message-handlers.ts
+- [x] T052 [US5] Add "Test API" button in authenticated popup view in src/entrypoints/popup/main.ts
+- [x] T053 [US5] Display UserProfile response (sub, email, name, picture) in popup in src/entrypoints/popup/main.ts
+- [x] T054 [US5] Add loading and error states for API demo in src/entrypoints/popup/main.ts
 
 **Checkpoint**: Full auth-to-API-call pattern demonstrated
 
@@ -176,16 +176,16 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T055 [P] Create manual test checklist for OAuth flows in tests/manual/oauth-flow.md
-- [ ] T056 [P] Add unit tests for PKCE helpers in tests/unit/auth/pkce.test.ts
-- [ ] T057 [P] Add unit tests for storage layer in tests/unit/storage/storage.test.ts
-- [ ] T058 [P] Add unit tests for validation functions in tests/unit/auth/validation.test.ts
-- [ ] T059 Verify docs/SETUP.md accuracy with actual implementation
-- [ ] T060 Add inline code comments for reference implementation clarity
-- [ ] T061 Run ESLint and fix any warnings
+- [x] T055 [P] Create manual test checklist for OAuth flows in tests/manual/oauth-flow.md
+- [x] T056 [P] Add unit tests for PKCE helpers in tests/unit/auth/pkce.test.ts
+- [x] T057 [P] Add unit tests for storage layer in tests/unit/storage/storage.test.ts
+- [x] T058 [P] Add unit tests for validation functions in tests/unit/auth/validation.test.ts
+- [x] T059 Verify docs/SETUP.md accuracy with actual implementation
+- [x] T060 Add inline code comments for reference implementation clarity
+- [x] T061 Run ESLint and fix any warnings
 - [ ] T062 Test extension in Chrome, Edge, and Brave browsers
 - [ ] T063 Verify all acceptance scenarios from spec.md pass
-- [ ] T064 Run pnpm audit and resolve any security vulnerabilities
+- [x] T064 Run npm audit and resolve any security vulnerabilities
 
 ---
 

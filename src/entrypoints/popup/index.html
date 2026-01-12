@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auth0 Passwordless</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- Loading State -->
+      <div id="loading-view" class="view">
+        <div class="container">
+          <div class="spinner"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+
+      <!-- Login View -->
+      <div id="login-view" class="view hidden">
+        <div class="container">
+          <h1>Sign In</h1>
+          <p class="subtitle">Enter your email to receive a login code</p>
+          <form id="email-form">
+            <div class="form-group">
+              <label for="email-input">Email</label>
+              <input
+                type="email"
+                id="email-input"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+            <button type="submit" id="email-submit" class="btn-primary">
+              Send Code
+            </button>
+          </form>
+          <div id="login-error" class="error-message hidden"></div>
+        </div>
+      </div>
+
+      <!-- OTP Verification View -->
+      <div id="otp-view" class="view hidden">
+        <div class="container">
+          <h1>Enter Code</h1>
+          <p class="subtitle">We sent a code to <span id="otp-email"></span></p>
+          <form id="otp-form">
+            <div class="form-group">
+              <label for="otp-input">Verification Code</label>
+              <input
+                type="text"
+                id="otp-input"
+                placeholder="123456"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                maxlength="6"
+                autocomplete="one-time-code"
+                required
+              />
+            </div>
+            <button type="submit" id="otp-submit" class="btn-primary">
+              Verify
+            </button>
+          </form>
+          <div class="otp-actions">
+            <button id="resend-btn" class="btn-link">Resend Code</button>
+            <button id="back-btn" class="btn-link">Use different email</button>
+          </div>
+          <div id="otp-error" class="error-message hidden"></div>
+          <div id="otp-success" class="success-message hidden"></div>
+        </div>
+      </div>
+
+      <!-- Authenticated View -->
+      <div id="authenticated-view" class="view hidden">
+        <div class="container">
+          <div class="user-info">
+            <div id="user-avatar" class="avatar">
+              <span id="avatar-initial"></span>
+            </div>
+            <div class="user-details">
+              <p id="user-name" class="user-name">User</p>
+              <p id="user-email" class="user-email"></p>
+            </div>
+          </div>
+
+          <div class="session-info">
+            <p>Session expires: <span id="session-expiry"></span></p>
+          </div>
+
+          <div class="actions">
+            <button id="test-api-btn" class="btn-secondary">
+              Test API Call
+            </button>
+            <button id="logout-btn" class="btn-outline">Sign Out</button>
+          </div>
+
+          <div id="api-result" class="api-result hidden">
+            <h3>API Response</h3>
+            <pre id="api-response"></pre>
+          </div>
+
+          <div id="auth-error" class="error-message hidden"></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
